@@ -3,14 +3,14 @@
 </template>
 
 <script setup lang="ts">
-const str = '我爱你'
+
 </script>
 
 <style scoped lang="scss">
 .box {
   width: 600px;
   height: 400px;
-  background: black;
+  background: rgb(213, 75, 75);
   h1 {
     color: white;
   }
