@@ -13,7 +13,7 @@
     color: white;
   }
 }
-.box12{
+.box12 {
   width: 600px;
   height: 400px;
   background: rgb(213, 75, 75);
