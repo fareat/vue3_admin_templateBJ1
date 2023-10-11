@@ -15,7 +15,7 @@
     color: white;
   }
 }
-.box1{
+.box12{
   width: 600px;
   height: 400px;
   background: rgb(213, 75, 75);
