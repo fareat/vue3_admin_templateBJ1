@@ -21,7 +21,7 @@
     color: white;
   }
 }
-.box123{
+.box123 {
   width: 600px;
   height: 400px;
   background: rgb(213, 75, 75);
