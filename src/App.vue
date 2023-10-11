@@ -13,12 +13,5 @@
     color: white;
   }
 }
-.box12 {
-  width: 600px;
-  height: 400px;
-  background: rgb(213, 75, 75);
-  h1 {
-    color: white;
-  }
-}
+
 </style>
