@@ -10,26 +10,24 @@
       :total="400"
     />
   </div>
-  <Test></Test>
+  <div>
+    <p>图标测试</p>
+    <svg-icon name="phone" color="pink" width="10px" height="10px"></svg-icon>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {
-
-  Delete,
-
-} from '@element-plus/icons-vue'
-import Test from '@/components/Test.vue'
+import { Delete } from '@element-plus/icons-vue'
+import SvgIcon from 'E:/vue_1/demo2/src/components/index.vue'
 </script>
 
 <style scoped lang="scss">
 .box {
   width: 600px;
-  height: 400px;
+  height: 100px;
   background: rgb(213, 75, 75);
   h1 {
     color: white;
   }
 }
-
 </style>
