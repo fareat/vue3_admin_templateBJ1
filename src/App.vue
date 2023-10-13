@@ -12,13 +12,17 @@
   </div>
   <div>
     <p>图标测试</p>
-    <svg-icon name="phone" color="pink" width="10px" height="10px"></svg-icon>
+    <SvgIcon name="phone"></SvgIcon>
+    <Pagination></Pagination>
+  </div>
+  <div class="test">
+    <p>测试sass</p>
+    <h1>123456</h1>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Delete } from '@element-plus/icons-vue'
-import SvgIcon from 'E:/vue_1/demo2/src/components/index.vue'
 </script>
 
 <style scoped lang="scss">
@@ -28,6 +32,11 @@ import SvgIcon from 'E:/vue_1/demo2/src/components/index.vue'
   background: rgb(213, 75, 75);
   h1 {
     color: white;
+  }
+}
+.test {
+  h1 {
+    color: $color;
   }
 }
 </style>
