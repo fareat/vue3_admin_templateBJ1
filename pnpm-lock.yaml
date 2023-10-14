@@ -9,7 +9,7 @@ specifiers:
   '@typescript-eslint/parser': ^6.7.5
   '@vitejs/plugin-vue': ^4.2.3
   axios: ^1.5.1
-  element-plus: ^2.3.14
+  element-plus: ^2.4.0
   eslint: ^8.51.0
   eslint-config-prettier: ^9.0.0
   eslint-plugin-import: ^2.28.1
@@ -39,14 +39,16 @@ specifiers:
   vite-plugin-mock: ^2.9.8
   vite-plugin-svg-icons: ^2.0.1
   vue: ^3.3.4
+  vue-router: ^4.2.5
   vue-tsc: ^1.8.5
 
 dependencies:
   '@element-plus/icons-vue': registry.npmmirror.com/@element-plus/icons-vue/2.1.0_vue@3.3.4
   axios: registry.npmmirror.com/axios/1.5.1
-  element-plus: registry.npmmirror.com/element-plus/2.3.14_vue@3.3.4
+  element-plus: registry.npmmirror.com/element-plus/2.4.0_vue@3.3.4
   mockjs: registry.npmmirror.com/mockjs/1.1.0
   vue: 3.3.4
+  vue-router: registry.npmmirror.com/vue-router/4.2.5_vue@3.3.4
 
 devDependencies:
   '@babel/eslint-parser': 7.22.15_eslint@8.51.0
@@ -3717,6 +3719,12 @@ packages:
     version: 0.0.16
     dev: false
 
+  registry.npmmirror.com/@vue/devtools-api/6.5.1:
+    resolution: {integrity: sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.5.1.tgz}
+    name: '@vue/devtools-api'
+    version: 6.5.1
+    dev: false
+
   registry.npmmirror.com/@vueuse/core/9.13.0_vue@3.3.4:
     resolution: {integrity: sha512-pujnclbeHWxxPRqXWmdkKV5OX4Wk4YeK7wusHqRwU0Q7EFusHoqNA/aPhB6KCh9hEqJkLAJo7bb0Lh9b+OIVzw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/core/-/core-9.13.0.tgz}
     id: registry.npmmirror.com/@vueuse/core/9.13.0
@@ -4575,11 +4583,11 @@ packages:
     version: 1.1.1
     dev: true
 
-  registry.npmmirror.com/element-plus/2.3.14_vue@3.3.4:
-    resolution: {integrity: sha512-9yvxUaU4jXf2ZNPdmIxoj/f8BG8CDcGM6oHa9JIqxLjQlfY4bpzR1E5CjNimnOX3rxO93w1TQ0jTVt0RSxh9kA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/element-plus/-/element-plus-2.3.14.tgz}
-    id: registry.npmmirror.com/element-plus/2.3.14
+  registry.npmmirror.com/element-plus/2.4.0_vue@3.3.4:
+    resolution: {integrity: sha512-yJEa8LXkGOOgkfkeqMMEdeX/Dc8EH9qPcRuX91dlhSXxgCKKbp9tH3QFTOG99ibZsrN/Em62nh7ddvbc7I1frw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/element-plus/-/element-plus-2.4.0.tgz}
+    id: registry.npmmirror.com/element-plus/2.4.0
     name: element-plus
-    version: 2.3.14
+    version: 2.4.0
     peerDependencies:
       vue: ^3.2.0
     dependencies:
@@ -7315,6 +7323,18 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
+      vue: 3.3.4
+    dev: false
+
+  registry.npmmirror.com/vue-router/4.2.5_vue@3.3.4:
+    resolution: {integrity: sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-router/-/vue-router-4.2.5.tgz}
+    id: registry.npmmirror.com/vue-router/4.2.5
+    name: vue-router
+    version: 4.2.5
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api/6.5.1
       vue: 3.3.4
     dev: false
 
