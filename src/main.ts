@@ -11,6 +11,8 @@ import App from '@/App.vue'
 //import SvgIcon from 'E:/vue_1/demo2/src/components/index.vue'
 //引入模板全局样式
 import '@/styles/index.css'
+//引入仓库
+import pinia from './store/index'
 //引入路由
 import router from './router/index'
 //测试假的接口能否使用
@@ -43,5 +45,6 @@ axios({
     password: '111111',
   },
 })
+app.use(pinia)
 app.use(router)
 app.mount('#app')

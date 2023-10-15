@@ -18,6 +18,7 @@ specifiers:
   eslint-plugin-vue: ^9.17.0
   husky: ^8.0.0
   mockjs: ^1.1.0
+  pinia: ^2.1.7
   postcss: ^8.4.31
   postcss-html: ^1.5.0
   postcss-scss: ^4.0.9
@@ -47,6 +48,7 @@ dependencies:
   axios: registry.npmmirror.com/axios/1.5.1
   element-plus: registry.npmmirror.com/element-plus/2.4.0_vue@3.3.4
   mockjs: registry.npmmirror.com/mockjs/1.1.0
+  pinia: registry.npmmirror.com/pinia/2.1.7_typescript@5.2.2+vue@3.3.4
   vue: 3.3.4
   vue-router: registry.npmmirror.com/vue-router/4.2.5_vue@3.3.4
 
@@ -2866,7 +2868,6 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -6358,6 +6359,27 @@ packages:
     version: 2.3.1
     engines: {node: '>=8.6'}
     dev: true
+
+  registry.npmmirror.com/pinia/2.1.7_typescript@5.2.2+vue@3.3.4:
+    resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.1.7.tgz}
+    id: registry.npmmirror.com/pinia/2.1.7
+    name: pinia
+    version: 2.1.7
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api/6.5.1
+      typescript: 5.2.2
+      vue: 3.3.4
+      vue-demi: registry.npmmirror.com/vue-demi/0.14.6_vue@3.3.4
+    dev: false
 
   registry.npmmirror.com/posix-character-classes/0.1.1:
     resolution: {integrity: sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz}
