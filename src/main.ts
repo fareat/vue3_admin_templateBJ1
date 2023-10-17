@@ -10,7 +10,7 @@ import 'virtual:svg-icons-register'
 import App from '@/App.vue'
 //import SvgIcon from 'E:/vue_1/demo2/src/components/index.vue'
 //引入模板全局样式
-import '@/styles/index.css'
+import '@/styles/index.scss'
 //引入仓库
 import pinia from './store/index'
 //引入路由
