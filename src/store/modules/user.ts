@@ -7,7 +7,8 @@ import type { loginForm, loginResponseData } from '@/api/user/tape'
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
-
+//引入路由常量
+import { constantRoute } from '@/router/routes'
 //创建用户小仓库
 let useUserStore = defineStore('User', {
   //小仓库存储数据的地方
@@ -15,6 +16,7 @@ let useUserStore = defineStore('User', {
     return {
       //用本地持久化存储赋值
       token: GET_TOKEN(), //用户的唯一标识
+      menuRoutes:constantRoute,//仓库存储生成菜单需要的路由
     }
   },
   //异步或者逻辑的地方

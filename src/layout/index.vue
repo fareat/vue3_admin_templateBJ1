@@ -3,6 +3,15 @@
         <!--左侧菜单-->
         <div class="layout_slider">
             <Logo></Logo>
+            <!--展示菜单-->
+            <!--滚动组件-->
+            <el-scrollbar class="scrollbar">
+                <!--菜单组件-->
+                <el-menu background-color="$base-menu-background" text-color="white">
+                    
+                    <Menu :menuList="userStore.menuRoutes"></Menu>
+                </el-menu>
+            </el-scrollbar>
         </div>
         <!--顶部侧菜单-->
         <div class="layout_tabbar">456</div>
@@ -14,7 +23,14 @@
 </template>
 
 <script setup lang="ts">
+//引入logo子组件
 import Logo from './logo/index.vue'
+//引入菜单组件
+import Menu from './menu/index.vue'
+//获取用户相关的小仓库
+import useUserStore from '@/store/modules/user';
+let userStore=useUserStore()
+
 </script>
 
 <style scoped lang="scss">
@@ -26,6 +42,12 @@ import Logo from './logo/index.vue'
         width: $base-menu-width;
         height: 100vh;
         background: $base-menu-background;
+        .scrollbar{
+            width: calc(100vh - $base-menu-logo-height);
+            .el-menu{
+                border-right: none;
+            }
+        }
      }
      .layout_tabbar{
         position: fixed;
