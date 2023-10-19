@@ -17,7 +17,7 @@
         <div class="layout_tabbar">456</div>
         <!--内容展示菜单-->
         <div class="layout_main">
-            <h1 style="height: 1000px;">在干嘛</h1>
+            <Main></Main>
         </div>
     </div>
 </template>
@@ -25,6 +25,8 @@
 <script setup lang="ts">
 //引入logo子组件
 import Logo from './logo/index.vue'
+//右侧内容的展示区
+import Main from './main/index.vue'
 //引入菜单组件
 import Menu from './menu/index.vue'
 //获取用户相关的小仓库

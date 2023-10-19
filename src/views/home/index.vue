@@ -1,9 +1,24 @@
 <template>
-  <div>
-    <h1>我是一级路由----首页</h1>
-  </div>
+
+      <el-menu>
+        <el-sub-menu index="1">
+          <template #title>
+            <el-icon><location /></el-icon>
+            <span>Navigator One</span>
+          </template>
+            <el-menu-item index="1-1">item one</el-menu-item>
+            <el-menu-item index="1-2">item two</el-menu-item>
+            <el-menu-item index="1-3">item three</el-menu-item>
+        </el-sub-menu>
+      </el-menu>
+  
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+import {
 
-<style scoped></style>
+  Location,
+
+} from '@element-plus/icons-vue'
+
+</script>
