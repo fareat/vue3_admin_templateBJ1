@@ -47,13 +47,15 @@
 <script setup lang="ts">
 import { Lock, User } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import { ElNotification } from 'element-plus'
 //引入当前获取时间的函数
 import { getTime } from '@/utils/time'
 //引入用户信息小仓库
 import useUserStore from '@/store/modules/user'
 //获取el-form组件
+//获取退出时的页面路由
+let $route=useRoute()
 let loginForms = ref()
 let useStore = useUserStore()
 //定义变量，控制按钮加载效果
@@ -70,12 +72,15 @@ const login = async () => {
   //请求成功-》首页展示
   //请求失败-》弹出登录失败信息
   try {
+    //判断登录时是否带有query参数，如有，则往query的路径转，没有就跳首页
+    let redirect:any=$route.query.redirect
+    $router.push({path:redirect||'/'})
     //加载效果
     loading.value = true
     //可以书写.then语法
     //保证登录成功
     await useStore.userLogin(loginForm)
-    $router.push('/')
+    
     //成功提示信息
     ElNotification({
       type: 'success',

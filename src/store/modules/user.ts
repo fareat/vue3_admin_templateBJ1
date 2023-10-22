@@ -6,7 +6,7 @@ import { reqLogin, reqUserInfo } from '@/api/user/index'
 import type { loginForm, loginResponseData } from '@/api/user/tape'
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
-import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN,REMOVE_TOKEN } from '@/utils/token'
 //引入路由常量
 import { constantRoute } from '@/router/routes'
 //创建用户小仓库
@@ -51,8 +51,16 @@ let useUserStore = defineStore('User', {
         this.username = result.data.checkUser.username
         this.avatar = result.data.checkUser.avatar
         console.log(this.username, this.avatar)
+        return 'ok'
       } else {
+        return Promise.reject('获取用户信息失败')
       }
+    },
+    userLogout(){
+      this.token=""
+      this.username=""
+      this.avatar=""
+      REMOVE_TOKEN()
     },
   },
   getters: {},
