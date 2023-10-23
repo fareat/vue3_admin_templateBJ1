@@ -47,7 +47,7 @@ router.beforeEach(async(to:any, from:any, next:any) => {
                 } catch (error) {
                     //token过期，或者token被本地修改，才会触发这个错误
                     //处理：1.退出登录，先把本地的相关数据清空
-                    userStore.userLogout()
+                    await userStore.userLogout()
                     next({path:'/login',query:{redirect:to.path}})                    
                 }
             }

@@ -4,40 +4,16 @@
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
         <!--登录的表单-->
-        <el-form
-          class="login_form"
-          :model="loginForm"
-          :rules="rules"
-          ref="loginForms"
-        >
+        <el-form class="login_form" :model="loginForm" :rules="rules" ref="loginForms">
           <h1 class="hd1">hello</h1>
           <h2 class="hd2">欢迎来到甘显焕的平台</h2>
           <el-form-item prop="username">
-            <el-input
-              :prefix-icon="User"
-              v-model="loginForm.username"
-              placeholder="账号"
-              clearable
-            />
+            <el-input :prefix-icon="User" v-model="loginForm.username" placeholder="账号" clearable/>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input
-              :prefix-icon="Lock"
-              v-model="loginForm.password"
-              type="password"
-              placeholder="密码"
-              show-password
-            />
+            <el-input :prefix-icon="Lock" v-model="loginForm.password" type="password" placeholder="密码" show-password/>
           </el-form-item>
-          <el-button
-            :loading="loading"
-            class="login_btn"
-            @click="login"
-            type="primary"
-            size="default"
-          >
-            登录
-          </el-button>
+          <el-button :loading="loading" class="login_btn" @click="login" type="primary" size="default" >登录</el-button>
         </el-form>
       </el-col>
     </el-row>
@@ -62,7 +38,7 @@ let useStore = useUserStore()
 let loading = ref(false)
 //获取路由
 let $router = useRouter()
-let loginForm = reactive({ username: 'admin', password: '111111' })
+let loginForm = reactive({ username: 'admin', password: 'atguigu123' })
 
 const login = async () => {
   await loginForms.value.validate()
@@ -72,14 +48,15 @@ const login = async () => {
   //请求成功-》首页展示
   //请求失败-》弹出登录失败信息
   try {
-    //判断登录时是否带有query参数，如有，则往query的路径转，没有就跳首页
-    let redirect:any=$route.query.redirect
-    $router.push({path:redirect||'/'})
-    //加载效果
-    loading.value = true
     //可以书写.then语法
     //保证登录成功
     await useStore.userLogin(loginForm)
+    //判断登录时是否带有query参数，如有，则往query的路径转，没有就跳首页
+    let redirect:any= $route.query.redirect
+    $router.push({path: redirect ||'/'})
+    //加载效果
+    loading.value = true
+
     
     //成功提示信息
     ElNotification({

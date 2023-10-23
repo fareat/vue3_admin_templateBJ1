@@ -73,8 +73,9 @@ const fullScreen = () => {
 //第一件事：需要向服务器发送请求（退出登录接口）
 //第二件事：仓库中关于用户相关的数据清空（token|username|avatar）
 //第三剑士：跳转到登录页面
-const logout=()=>{
-  UserStore.userLogout()
+//async与await是一起用的，他的意思是当await运行完之后才能往下执行
+const logout=async()=>{
+  await UserStore.userLogout()
   $router.push({path: '/login',query:{redirect:$route.path}})
   
 }
