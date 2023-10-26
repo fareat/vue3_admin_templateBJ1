@@ -1,15 +1,19 @@
 //创建用户相关的小仓库
 import { defineStore } from 'pinia'
 //引入接口
-import { reqLogin, reqUserInfo,reqLogout } from '@/api/user/index'
+import { reqLogin, reqUserInfo, reqLogout } from '@/api/user/index'
 //引入新的数据类型
-import type { loginFormData,loginResponseData,userInfoReponseData } from '@/api/user/tape'
+import type {
+  loginFormData,
+  loginResponseData,
+  userInfoReponseData,
+} from '@/api/user/tape'
 
 /* //引入数据类型
 import type { loginForm, loginResponseData } from '@/api/user/tape' */
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
-import { SET_TOKEN, GET_TOKEN,REMOVE_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 //引入路由常量
 import { constantRoute } from '@/router/routes'
 import request from '@/utils/request'
@@ -49,7 +53,7 @@ let useUserStore = defineStore('User', {
     //获取用户信息的方法
     async userInfo() {
       //获取用户信息进行存储仓库
-      let result:userInfoReponseData = await reqUserInfo()
+      let result: userInfoReponseData = await reqUserInfo()
       //获取用户信息成功，存储一下用户信息
       if (result.code == 200) {
         this.username = result.data.name
@@ -61,19 +65,18 @@ let useUserStore = defineStore('User', {
       }
     },
     //退出登录
-    async userLogout(){
-      let result:any=await  reqLogout()
-      console.log(result);
-      if(result.code==200){
-        this.token=""
-        this.username=""
-        this.avatar=""
+    async userLogout() {
+      let result: any = await reqLogout()
+      console.log(result)
+      if (result.code == 200) {
+        this.token = ''
+        this.username = ''
+        this.avatar = ''
         REMOVE_TOKEN()
         return 'ok'
-      }else{
+      } else {
         return Promise.reject(new Error(result.message))
       }
-
     },
   },
   getters: {},

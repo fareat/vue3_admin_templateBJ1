@@ -9,6 +9,6 @@ export const GET_TOKEN = () => {
   return localStorage.getItem('TOKEN')
 }
 //本地存储删除数据的方法
-export const REMOVE_TOKEN=()=>{
+export const REMOVE_TOKEN = () => {
   localStorage.removeItem('TOKEN')
 }

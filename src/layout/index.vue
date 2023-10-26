@@ -99,7 +99,7 @@ export default {
     position: relative;
     width: calc(100% - $base-menu-width);
     height: calc(100vh - $base-tabbar-height);
-    
+
     left: $base-menu-width;
     top: calc(-100vh + $base-tabbar-height);
     padding: 20px;

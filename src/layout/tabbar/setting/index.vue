@@ -33,21 +33,17 @@
 
 <script setup lang="ts">
 //引入面包屑分隔图标
-import {
-  Refresh,
-  FullScreen,
-  Setting,
-} from '@element-plus/icons-vue'
+import { Refresh, FullScreen, Setting } from '@element-plus/icons-vue'
 //获取骨架的小仓库
 import useLayOutSettingStore from '@/store/modules/setting'
 //获取用户相关的小仓库
 import useUserStore from '@/store/modules/user'
 //引入路由，实现退出跳转
-import { useRouter,useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 //获取路由器对象
-let $router=useRouter()
+let $router = useRouter()
 //退出时获取路由对象
-let $route=useRoute()
+let $route = useRoute()
 let UserStore = useUserStore()
 
 let LayOutSettingStore = useLayOutSettingStore()
@@ -74,10 +70,9 @@ const fullScreen = () => {
 //第二件事：仓库中关于用户相关的数据清空（token|username|avatar）
 //第三剑士：跳转到登录页面
 //async与await是一起用的，他的意思是当await运行完之后才能往下执行
-const logout=async()=>{
+const logout = async () => {
   await UserStore.userLogout()
-  $router.push({path: '/login',query:{redirect:$route.path}})
-  
+  $router.push({ path: '/login', query: { redirect: $route.path } })
 }
 </script>
 

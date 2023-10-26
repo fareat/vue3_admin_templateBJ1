@@ -16,7 +16,7 @@ import pinia from './store/index'
 //引入路由
 import router from './router/index'
 //引入鉴权，防止输入路由，而实现跳转
-import  './permisstion'
+import './permisstion'
 //测试假的接口能否使用
 import axios from 'axios'
 //引入自定义插件对象：注册整个项目的全局组件
