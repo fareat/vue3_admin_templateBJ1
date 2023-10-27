@@ -46,7 +46,20 @@
               icon="Edit"
               @click="updateTrademar(row)"
             ></el-button>
-            <el-button type="primary" size="small" icon="Delete"></el-button>
+            <el-popconfirm
+              :title="`您确定要删除${row.tmName}`"
+              width="250px"
+              icon="Delete"
+              @confirm="removeTradeMark(row.id)"
+            >
+              <template #reference>
+                <el-button
+                  type="primary"
+                  size="small"
+                  icon="Delete"
+                ></el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -80,14 +93,20 @@
       v-model="dialogFormVisible"
       :title="trademarkParams.id ? '编辑品牌' : '添加品牌'"
     >
-      <el-form style="width: 80%">
-        <el-form-item label="品牌名称" label-width="80px">
+      <!--:model--接收表单数据-->
+      <el-form
+        style="width: 80%"
+        :model="trademarkParams"
+        :rules="rules"
+        ref="formRef"
+      >
+        <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input
             placeholder="请输入品牌名称"
             v-model="trademarkParams.tmName"
           ></el-input>
         </el-form-item>
-        <el-form-item label="品牌LOGO" label-width="80px">
+        <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
           <!--
             action：要连接的url
             show-file-listL:是否显示上传的文件
@@ -124,10 +143,11 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, nextTick } from 'vue'
 import {
   reqHasTrademark,
   reqAddOrUpdateTrademark,
+  reqDeleteTrademark,
 } from '@/api/product/trademark/index'
 import type {
   Records,
@@ -145,6 +165,8 @@ let total = ref<number>(0)
 let trademarkArr = ref<Records>([])
 //控制对话框显示或者隐藏
 let dialogFormVisible = ref<boolean>(false)
+//获取el-form组件实例
+let formRef = ref()
 //弹窗标题
 let biaoti = ref<string>('')
 //-----------------------------------定义收集新增品牌数据
@@ -178,6 +200,13 @@ const addTrademark = () => {
   trademarkParams.id = 0
   trademarkParams.tmName = ''
   trademarkParams.logoUrl = ''
+  //ts的？号写法
+  /*   formRef.value?.clearValidate('logoUrl')
+  formRef.value?.clearValidate('tmName') */
+  nextTick(() => {
+    formRef.value.clearValidate('logoUrl')
+    formRef.value.clearValidate('tmName')
+  })
 }
 //修改图片
 //row为当前已有的品牌
@@ -189,6 +218,11 @@ const updateTrademar = (row: TradeMark) => {
   trademarkParams.logoUrl=row.logoUrl */
   //ES6写法
   Object.assign(trademarkParams, row)
+  //清空校验规则的提示信息
+  nextTick(() => {
+    formRef.value.clearValidate('logoUrl')
+    formRef.value.clearValidate('tmName')
+  })
 }
 //对话框底部取消按钮
 const canael = () => {
@@ -196,6 +230,8 @@ const canael = () => {
 }
 //对话框底部确定按钮
 const confirm = async () => {
+  //在你发请求之前要对整个表单进行效验
+  await formRef.value.validate()
   let result: any = await reqAddOrUpdateTrademark(trademarkParams)
   //添加品牌、成功||修改品牌数据
   if (result.code == 200) {
@@ -267,6 +303,61 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
   //response；为上传到服务器，服务器返回的数据
   //手机上传图片的地址，添加一个新的品牌的时候非服务器
   trademarkParams.logoUrl = response.data
+  //清理表单验证信息
+  formRef.value.clearValidate('logoUrl')
+}
+
+//表单效验规则自定义方法
+const validatorTmName = (rule: any, value: any, callBack: any) => {
+  //rule，是返回的规则对象const rules
+  //value，表单的文本内容
+  //callBack，放行函数
+  if (value.trim().length >= 2) {
+    callBack()
+  } else {
+    callBack(new Error('品牌名称位数大于等于两位'))
+  }
+}
+
+const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+  if (value) {
+    callBack()
+  } else {
+    callBack(new Error('LOGO图片必须上传'))
+  }
+}
+
+//表单效验规则对象
+const rules = {
+  tmName: [
+    //required:这个字段为必填项
+    //trigger：【blur，change】--【失去焦点，文本发生变化】
+    { required: true, trigger: 'blur', validator: validatorTmName },
+  ],
+  logoUrl: [
+    //在图片上，用trigger方法是没有意义的
+    { required: true, validator: validatorLogoUrl },
+  ],
+}
+
+//删除功能的气泡的确定按钮的回调
+const removeTradeMark = async (id: number) => {
+  let result = await reqDeleteTrademark(id)
+  if ((result.code = 200)) {
+    //删除成功的提示信息
+    ElMessage({
+      type: 'success',
+      message: '删除品牌成功',
+    })
+    getHasTrademark(
+      trademarkArr.value.length > 1 ? pageNo.value : pageNo.value - 1,
+    )
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除品牌失败',
+    })
+  }
 }
 </script>
 
