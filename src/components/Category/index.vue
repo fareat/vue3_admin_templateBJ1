@@ -3,7 +3,7 @@
     <el-form :inline="true">
       <el-form-item label="一级分类">
         <!--调用仓库，比较好管理数据的传输-->
-        <el-select v-model="categoryStore.c1Id">
+        <el-select v-model="categoryStore.c1Id" @change="handler">
           <el-option
             v-for="(c1, index) in categoryStore.c1Arr"
             :key="c1.id"
@@ -13,17 +13,23 @@
         </el-select>
       </el-form-item>
       <el-form-item label="二级分类">
-        <el-select>
-          <el-option label="北京"></el-option>
-          <el-option label="北京1"></el-option>
-          <el-option label="北京2"></el-option>
+        <el-select v-model="categoryStore.c2Id" @change="handler1">
+          <el-option
+            v-for="(c1, index) in categoryStore.c2Arr"
+            :key="c1.id"
+            :label="c1.name"
+            :value="c1.id"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="三级分类">
-        <el-select>
-          <el-option label="北京"></el-option>
-          <el-option label="北京1"></el-option>
-          <el-option label="北京2"></el-option>
+        <el-select v-model="categoryStore.c3Id">
+          <el-option
+            v-for="(c1, index) in categoryStore.c3Arr"
+            :key="c1.id"
+            :label="c1.name"
+            :value="c1.id"
+          ></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -43,6 +49,17 @@ onMounted(() => {
 //通知仓库获取一级分类的方法
 const getC1 = () => {
   categoryStore.getC1()
+}
+//当一级菜单选中值的时候触发
+const handler = () => {
+  categoryStore.getC2()
+  categoryStore.c2Id = ''
+  categoryStore.c3Id = ''
+  categoryStore.c3Arr = []
+}
+const handler1 = () => {
+  categoryStore.getC3()
+  categoryStore.c3Id = ''
 }
 </script>
 

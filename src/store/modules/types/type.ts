@@ -11,4 +11,8 @@ export interface UserState {
 export interface CategoryState {
   c1Id: string | number
   c1Arr: CategoryObj[]
+  c2Arr: string | number
+  c2Id: CategoryObj[]
+  c3Arr: string | number
+  c3Id: CategoryObj[]
 }
