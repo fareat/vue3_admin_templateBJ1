@@ -1,7 +1,7 @@
 //书写属性相关的API文件夹
 import request from '@/utils/request'
 //数据类型定义
-import type { CategoryResponseData, AttrResponseData } from './type'
+import type { CategoryResponseData, AttrResponseData, Attr } from './type'
 
 //属性管理模块接口地址
 enum API {
@@ -13,6 +13,8 @@ enum API {
   C3_URL = '/admin/product/getCategory3/',
   //商品基础信息接口
   ATTR_URL = '/admin/product/attrInfoList/',
+  //添加或者修改已有的属性方法
+  ADDORUPDATEATTR_URL = '/admin/product/saveAttrInfo',
 }
 
 //获取一级分类的接口方法
@@ -32,3 +34,7 @@ export const reqAttr = (
   request.get<any, AttrResponseData>(
     API.ATTR_URL + `${category1Id}/${category2Id}/${category3Id}`,
   )
+
+//新增或者是修改已有的属性接口
+export const reqAddOrUpadteAttr = (data: Attr) =>
+  request.post<any, any>(API.ADDORUPDATEATTR_URL, data)
