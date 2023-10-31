@@ -40,11 +40,12 @@
         <el-table-column label="操作" width="120px">
           <!--已有的属性对象-->
           <template #="{ row, $index }">
+            <!--修改已有属性的按钮-->
             <el-button
               type="primary"
               size="small"
               icon="Edit"
-              @click="updateAttr"
+              @click="updateAttr(row)"
             ></el-button>
             <el-button type="primary" size="small" icon="Delete"></el-button>
           </template>
@@ -88,15 +89,25 @@
           <template #="{ row, $index }">
             <el-input
               v-if="row.flag"
-              @blur="toLook(row)"
+              @blur="toLook(row, $index)"
               size="small"
               placeholder="请输入属性值名称"
               v-model="row.valueName"
+              :ref="(vc: any) => (inputArr[$index] = vc)"
             ></el-input>
-            <div v-else @click="Edit(row)">{{ row.valueName }}</div>
+            <div v-else @click="Edit(row, $index)">{{ row.valueName }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="属性值操作"></el-table-column>
+        <el-table-column label="属性值操作">
+          <template #="{ row, $index }">
+            <el-button
+              type="primary"
+              size="small"
+              icon="Delete"
+              @click="attrParams.attrValueList.splice($index, 1)"
+            ></el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-button
         type="primary"
@@ -116,7 +127,7 @@ import { ElMessage } from 'element-plus'
 //获取分类的数据
 import useCategoryStore from '@/store/modules/category'
 //获取组合式api函数watch
-import { watch, ref, reactive } from 'vue'
+import { watch, ref, reactive, nextTick } from 'vue'
 //引入获取已有属性与属性值接口
 import { reqAttr, reqAddOrUpadteAttr } from '@/api/product/attr/index'
 //返回的数据类型
@@ -136,7 +147,8 @@ let attrParams = reactive({
 })
 //接口实例化
 let categoryStore = useCategoryStore()
-
+//准备一个数组，用来存储自动对焦的数据
+let inputArr = ref<any>([])
 //定义card组件内容切换变量
 //如果scene=0，显示table，如果等于1，则展示展示添加与修改属性结构
 let scene = ref<number>(0)
@@ -175,8 +187,14 @@ const addAttr = () => {
   })
 }
 //修改按钮回调
-const updateAttr = () => {
+const updateAttr = (row: Attr) => {
   scene.value = 1
+  //将已有的属性对象赋值给attrParams对象即为
+  //可以用ES6->Object.assign进行对象的合并
+  //作用为第二个值得对象，赋值给第一个-------->一下为浅拷贝，当被赋予值的，数值改变，赋值的也会改变
+  //Object.assign(attrParams,row)
+  //深拷贝----------->两个互不影响
+  Object.assign(attrParams, JSON.parse(JSON.stringify(row)))
 }
 //取消按钮回调
 const cancel = () => {
@@ -188,6 +206,10 @@ const addAttrValue = () => {
   attrParams.attrValueList.push({
     valueName: '',
     flag: true, //控制每一个属性值的编辑模式和查看模式的切换
+  })
+  //添加后自动获取焦点
+  nextTick(() => {
+    inputArr.value[attrParams.attrValueList.length - 1].focus()
   })
 }
 //保存按钮回调
@@ -241,8 +263,12 @@ const toLook = (row: AttrValue, $index: number) => {
 
   row.flag = false
 }
-const Edit = (row: AttrValue) => {
+const Edit = (row: AttrValue, $index: number) => {
   row.flag = true
+  //响应式数据发生变化，获取更新后的DOM（组件实例）
+  nextTick(() => {
+    inputArr.value[$index].focus()
+  })
 }
 </script>
 
