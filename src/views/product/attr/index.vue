@@ -47,7 +47,20 @@
               icon="Edit"
               @click="updateAttr(row)"
             ></el-button>
-            <el-button type="primary" size="small" icon="Delete"></el-button>
+
+            <el-popconfirm
+              witdh="200px"
+              :title="`确定要删除${row.attrName}吗?`"
+              @confirm="deleteAttr(row.id)"
+            >
+              <template #reference>
+                <el-button
+                  type="primary"
+                  size="small"
+                  icon="Delete"
+                ></el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -127,9 +140,13 @@ import { ElMessage } from 'element-plus'
 //获取分类的数据
 import useCategoryStore from '@/store/modules/category'
 //获取组合式api函数watch
-import { watch, ref, reactive, nextTick } from 'vue'
+import { watch, ref, reactive, nextTick, onBeforeUnmount } from 'vue'
 //引入获取已有属性与属性值接口
-import { reqAttr, reqAddOrUpadteAttr } from '@/api/product/attr/index'
+import {
+  reqAttr,
+  reqAddOrUpadteAttr,
+  reqRemoveAttr,
+} from '@/api/product/attr/index'
 //返回的数据类型
 import type {
   AttrResponseData,
@@ -164,7 +181,7 @@ watch(
   },
 )
 
-//封装接口
+//封装接口-----》查看
 const getAttr = async () => {
   //解构
   const { c1Id, c2Id, c3Id } = categoryStore
@@ -270,6 +287,28 @@ const Edit = (row: AttrValue, $index: number) => {
     inputArr.value[$index].focus()
   })
 }
+
+//删除某一属性方法的回调
+const deleteAttr = async (arrtId: number) => {
+  let rouste = await reqRemoveAttr(arrtId)
+  if (rouste.code == 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    //重新获取一下查看接口
+    getAttr()
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败',
+    })
+  }
+}
+//组件销毁的时候清掉仓库数据
+onBeforeUnmount(() => {
+  categoryStore.$reset()
+})
 </script>
 
 <style scoped></style>
