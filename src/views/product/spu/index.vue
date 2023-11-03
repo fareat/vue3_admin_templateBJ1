@@ -4,7 +4,10 @@
     <Category :scene="scene"></Category>
     <!--下方卡片的数据-->
     <el-card style="margin: 10px 0px">
-      <el-button
+      <!--场景一********v-if和v-show都可以实现显示和隐藏 -->
+      <div v-show="scene==0">
+        <el-button
+        @click="addSpu"
         type="primary"
         size="default"
         icon="Plus"
@@ -37,6 +40,7 @@
               title="添加SPU"
             ></el-button>
             <el-button
+              @click="updateSpu"
               type="primary"
               size="small"
               icon="Edit"
@@ -69,7 +73,13 @@
         @current-change="getHaSpu"
         @size-change="changeSize"
       />
+      </div>
+      <!--场景二 修改|添加spu子组件-->
+      <SpuForm v-show="scene==1" @changeScene="changeScene"></SpuForm>
+      <!--场景三 添加sku子组件-->
+      <SkuForm v-show="scene==2"></SkuForm>
     </el-card>
+
   </div>
 </template>
 
@@ -80,11 +90,14 @@ import useCategoryStore from '@/store/modules/category'
 import { reqHasSpu } from '@/api/product/spu/index'
 //引入返回数据的类型
 import type { HasSpuResponseData, Records } from '@/api/product/spu/type'
-
+//场景
+import SpuForm from './spuForm.vue'
+import SkuForm from './skuForm.vue'
+import { ref, watch } from 'vue'
 let CategoryStore = useCategoryStore()
 
-import { ref, watch } from 'vue'
-let scene = ref<number>(0)
+
+let scene = ref<number>(0)//场景切换
 let pageNo = ref<number>(1)
 let pageSize = ref<number>(3)
 //存储接口的数据
@@ -117,6 +130,26 @@ const getHaSpu = async (pager = 1) => {
 //当分页器的下拉菜单发生变化的时候触发
 const changeSize = () => {
   getHaSpu()
+}
+
+//添加新的spu按钮的回调
+const addSpu=()=>{
+  scene.value=1
+}
+//子组件SPuform绑定自定义事件：目前是让子组件通知父组件切换场景为0
+const changeScene=(num:number)=>{
+  /*
+  const cancel=()=>{
+    $emit('changeScene',0)
+  }
+  子组件点击这个cancel事件，触发了changeScene，并传回了一个参数0
+  下面0赋值为场景切换
+  */
+  scene.value=num
+}
+//修改已有的SPU按钮
+const updateSpu=()=>{
+  scene.value=1
 }
 </script>
 
