@@ -40,7 +40,7 @@
               title="添加SPU"
             ></el-button>
             <el-button
-              @click="updateSpu"
+              @click="updateSpu(row)"
               type="primary"
               size="small"
               icon="Edit"
@@ -75,7 +75,7 @@
       />
       </div>
       <!--场景二 修改|添加spu子组件-->
-      <SpuForm v-show="scene==1" @changeScene="changeScene"></SpuForm>
+      <SpuForm ref="spu" v-show="scene==1" @changeScene="changeScene"></SpuForm>
       <!--场景三 添加sku子组件-->
       <SkuForm v-show="scene==2"></SkuForm>
     </el-card>
@@ -86,6 +86,8 @@
 <script setup lang="ts">
 //引入分类的仓库
 import useCategoryStore from '@/store/modules/category'
+//引入ts类型
+import type { SpuData } from '@/api/product/spu/type'
 //接口请求引入
 import { reqHasSpu } from '@/api/product/spu/index'
 //引入返回数据的类型
@@ -96,7 +98,7 @@ import SkuForm from './skuForm.vue'
 import { ref, watch } from 'vue'
 let CategoryStore = useCategoryStore()
 
-
+let spu=ref()
 let scene = ref<number>(0)//场景切换
 let pageNo = ref<number>(1)
 let pageSize = ref<number>(3)
@@ -148,8 +150,10 @@ const changeScene=(num:number)=>{
   scene.value=num
 }
 //修改已有的SPU按钮
-const updateSpu=()=>{
+const updateSpu=(row:SpuData)=>{
   scene.value=1
+  //调用子组件的spu方法，来获取完整已有的SPU数据
+  spu.value.initHasSpuData(row)
 }
 </script>
 

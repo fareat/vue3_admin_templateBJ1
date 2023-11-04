@@ -1,7 +1,7 @@
 //spu管理模块接口
 import request from '@/utils/request'
 //ts类型
-import { HasSpuResponseData,AllTradeMark,SpuHasImg,SaleAttrResponseData,HasSaleAttrResponseData } from './type'
+import { HasSpuResponseData,AllTradeMark,SpuHasImg,SaleAttrResponseData,HasSaleAttrResponseData, SpuData } from './type'
 
 enum API {
   //获取已有的SPU数据
@@ -13,7 +13,11 @@ enum API {
   //获取某一个SPU下的已有的销售属性接口地址
   SPUHASSALEATTR_URL='/admin/product/spuSaleAttrList/',
   //获取整个项目全部的销售属性【颜色，版本，尺码】
-  ALLSALEATTR_URL='/admin/product/baseSaleAttrList'
+  ALLSALEATTR_URL='/admin/product/baseSaleAttrList',
+  //追加一个SPU
+  ADDSPU_URL='/admin/product/saveSpuInfo',
+  //更新一个已有的SPU
+  UPDATESPU_URL='/admin/product/updateSpuInfo'
 }
 //获取某一个三级分类下已有的SPU数据
 export const reqHasSpu = (
@@ -32,3 +36,16 @@ export const reqSpuImagelist=(spuId:number)=>request.get<any,SpuHasImg>(API.IMAG
 export const reqSpuHasSaleAttr=(spuId:number)=>request.get<any,SaleAttrResponseData>(API.SPUHASSALEATTR_URL+spuId)
 //获取整个项目全部的销售属性【颜色，版本，尺码】
 export const reqAllSaleAttr=()=>request.get<any,HasSaleAttrResponseData>(API.ALLSALEATTR_URL)
+
+
+//追加一个SPU
+//更新一个已有的SPU
+export const reqAddOrUpdateSpu=(data:SpuData)=>{
+  if(data.id){
+    //有id更新
+    return request.post<any,any>(API.UPDATESPU_URL,data)
+  }else{
+    //无id增加 
+    return request.posh<any,any>(API.ADDSPU_URL,data)
+  }
+}
