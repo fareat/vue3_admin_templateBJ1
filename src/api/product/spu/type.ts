@@ -45,7 +45,9 @@ export interface SpuImg{
   updateTime?:string,
   spuId?:number,
   imgName:string,
-  imgUrl:string
+  imgUrl:string,
+  name:string,
+  url:string
 }
 //已有的spu的照片墙数据类型
 export interface SpuHasImg extends ResponseData{
@@ -71,7 +73,7 @@ export interface SaleAttr{
   createTime?:null,
   updateTime?:null,
   spuId?:number,
-  baseSaleAttrId:number,
+  baseSaleAttrId:number|string,
   saleAttrName:string,
   spuSaleAttrValueList:spuSaleAttrValueList
 }
