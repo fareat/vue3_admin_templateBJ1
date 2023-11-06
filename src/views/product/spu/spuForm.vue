@@ -48,10 +48,16 @@
                 <el-table-column label="销售属性名字"  width="120px" prop="saleAttrName"></el-table-column>
                 <el-table-column label="销售属性值"  >
                     <template #="{row,$index}">
-                        <el-tag v-for="(item,index) in row.spuSaleAttrValueList" :key="row.id" class="ml-2" style="margin-left: 15px;">
+                        <!--
+                            row.spuSaleAttrValueList.splice(index,1)
+                            这个删除的
+                            $index和index得到的效果是不一样的，
+                        -->
+                        <el-tag @close="row.spuSaleAttrValueList.splice(index,1)" v-for="(item,index) in row.spuSaleAttrValueList" :key="row.id" class="mx-2" closable style="margin-left: 5px;">
                             {{item.saleAttrValueName}}
                         </el-tag>
-                        <el-button type="primary" size="small" icon="Plus" style="margin-left: 15px;"></el-button>
+                        <el-input @blur="toLook(row)" v-model="row.saleAttrValue" v-if="row.flag==true" placeholder="请输入属性值" size="small" style="width:100px; margin-left: 5px;"></el-input>
+                        <el-button @click="toEdit(row)" v-else type="primary" size="small" icon="Plus" style="margin-left: 5px;"></el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作"  width="120px">
@@ -77,7 +83,7 @@
 import { ElMessage } from 'element-plus'
 import {ref,computed} from 'vue'
 //引入ts类型
-import type { HasSaleAttr, SaleAttr, SpuData } from '@/api/product/spu/type'
+import type { HasSaleAttr, SaleAttr, SaleAttrValue, SpuData } from '@/api/product/spu/type'
 //接口引入
 import { reqAllTradeMark,reqSpuImagelist,reqSpuHasSaleAttr,reqAllSaleAttr } from '@/api/product/spu';
 //引入TS类型
@@ -208,6 +214,50 @@ const addSaleAttr=()=>{
    //清空收集到的数据
    saleAttrIdAndValueName.value=''
 }
+//属性值点击按钮的回调
+const toEdit=(row:SaleAttr)=>{
+    row.flag=true
+}
+//输入框失去焦点执行的回调
+const toLook=(row:SaleAttr)=>{
+    //销售属性的id,属性值的名字
+    const {baseSaleAttrId,saleAttrValue}=row
+    //整理成接口需要的形式
+    let newSaleAttrValue:SaleAttrValue={
+        baseSaleAttrId,
+        saleAttrValueName:saleAttrValue
+    }
+    //非法情况判断
+    if ((saleAttrValue as string).trim()=='') {
+        ElMessage({
+            type:'error',
+            message:'属性值不能为空'
+        })
+    }
+    //检验属性已存在
+    let repeat= row.spuSaleAttrValueList.find(item=>{
+        return item.saleAttrValueName==saleAttrValue 
+    })
+    //判断属性已存在
+    if (repeat) {
+        ElMessage({
+            type:'error',
+            message:'属性值已存在'
+        })
+
+        return
+    }
+
+    //追加新的属性值对象,往接口的数据增加一个属性值对象
+    row.spuSaleAttrValueList.push(newSaleAttrValue)
+    //返回按钮界面
+    row.flag=false
+    //清空输入输入框数据
+    row.saleAttrValue=''
+}
+
+
+
 //对外暴露initHasSpuData方法，让父组件可以接收到数据
 defineExpose({initHasSpuData})
 </script>

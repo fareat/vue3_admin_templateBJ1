@@ -59,7 +59,7 @@ export interface SaleAttrValue{
   createTime?:null,
   updateTime?:null,
   spuId?:number,
-  baseSaleAttrId:number,
+  baseSaleAttrId:number|string,
   saleAttrValueName:string,
   saleAttrName?:string,
   isChecked?:null
@@ -75,7 +75,9 @@ export interface SaleAttr{
   spuId?:number,
   baseSaleAttrId:number|string,
   saleAttrName:string,
-  spuSaleAttrValueList:spuSaleAttrValueList
+  spuSaleAttrValueList:spuSaleAttrValueList,
+  flag?:boolean,
+  saleAttrValue?:string
 }
 
 //spu已有的销售属性接口返回的数据ts类型
