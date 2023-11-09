@@ -93,3 +93,28 @@ export interface HasSaleAttr{
 export interface HasSaleAttrResponseData extends ResponseData{
   data:HasSaleAttr[]
 }
+
+//sku添加的属性类型
+export interface SkuData{
+  category3Id:string|number,
+  spuId:string|number,
+  tmId:string|number,
+  skuName:string,
+  price:string|number,
+  weight:string|number,
+  skuDesc:string,
+  skuAttrValueList?:[
+    {
+      attrId:string|number,
+      valueId:string|number
+    }
+  ],
+  skuSaleAttrValueLiat?:[
+    {
+      saleAttrId:string|number,
+      saleAttrValueId:string|number
+    }
+  ],
+  skuDefaultImg:string
+
+}

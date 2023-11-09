@@ -37,7 +37,8 @@
               type="primary"
               size="small"
               icon="Plus"
-              title="添加SPU"
+              title="添加SKU"
+              @click="addSku(row)"
             ></el-button>
             <el-button
               @click="updateSpu(row)"
@@ -77,7 +78,7 @@
       <!--场景二 修改|添加spu子组件-->
       <SpuForm ref="spu" v-show="scene==1" @changeScene="changeScene"></SpuForm>
       <!--场景三 添加sku子组件-->
-      <SkuForm v-show="scene==2"></SkuForm>
+      <SkuForm ref="sku" v-show="scene==2" @changeScene="changeScene"></SkuForm>
     </el-card>
 
   </div>
@@ -98,7 +99,9 @@ import SkuForm from './skuForm.vue'
 import { ref, watch } from 'vue'
 let CategoryStore = useCategoryStore()
 
+//子组件的方法方法实例化
 let spu=ref()
+
 let scene = ref<number>(0)//场景切换
 let pageNo = ref<number>(1)
 let pageSize = ref<number>(3)
@@ -106,6 +109,9 @@ let pageSize = ref<number>(3)
 let records = ref<Records>([])
 //存储已有的SPU总数
 let total = ref<number>(0)
+
+//获取sku实例
+let sku=ref<any>()
 watch(
   () => CategoryStore.c3Id,
   () => {
@@ -115,7 +121,6 @@ watch(
     getHaSpu()
   },
 )
-
 const getHaSpu = async (pager = 1) => {
   pageNo.value = pager
   let result: HasSpuResponseData = await reqHasSpu(
@@ -133,13 +138,14 @@ const getHaSpu = async (pager = 1) => {
 const changeSize = () => {
   getHaSpu()
 }
-
 //添加新的spu按钮的回调
 const addSpu=()=>{
   scene.value=1
+  //点击添加按钮，调用组件方法初始化
+  spu.value.initAddSpu(CategoryStore.c3Id)
 }
 //子组件SPuform绑定自定义事件：目前是让子组件通知父组件切换场景为0
-const changeScene=(num:number)=>{
+const changeScene=(obj:any)=>{
   /*
   const cancel=()=>{
     $emit('changeScene',0)
@@ -147,13 +153,30 @@ const changeScene=(num:number)=>{
   子组件点击这个cancel事件，触发了changeScene，并传回了一个参数0
   下面0赋值为场景切换
   */
-  scene.value=num
+  scene.value=obj.flag
+    //重新获取SPU的数据
+  if (obj.params=='update') {
+    //更新留在当前页
+    getHaSpu(pageNo.value)
+  }else{
+    //添加留在第一页
+    getHaSpu()
+  }
 }
 //修改已有的SPU按钮
 const updateSpu=(row:SpuData)=>{
   scene.value=1
   //调用子组件的spu方法，来获取完整已有的SPU数据
   spu.value.initHasSpuData(row)
+
+}
+
+//添加SKU按钮的回调
+const addSku=(row:SpuData)=>{
+  //切换场景
+  scene.value=2
+  //调用子组件的方法初始化添加SKU的数据
+  sku.value.initSkuData(CategoryStore.c1Id,CategoryStore.c2Id,row)
 }
 </script>
 

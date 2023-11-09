@@ -73,7 +73,7 @@
             </el-table>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" size="default" >保存</el-button>
+            <el-button :disabled="saleAttr.length>0?false:true" type="primary" size="default" @click="save">保存</el-button>
             <el-button type="primary" size="default" @click="cancel">取消</el-button>
         </el-form-item>
     </el-form>
@@ -85,13 +85,13 @@ import {ref,computed} from 'vue'
 //引入ts类型
 import type { HasSaleAttr, SaleAttr, SaleAttrValue, SpuData } from '@/api/product/spu/type'
 //接口引入
-import { reqAllTradeMark,reqSpuImagelist,reqSpuHasSaleAttr,reqAllSaleAttr } from '@/api/product/spu';
+import { reqAllTradeMark,reqSpuImagelist,reqSpuHasSaleAttr,reqAllSaleAttr,reqAddOrUpdateSpu } from '@/api/product/spu';
 //引入TS类型
 import type { SpuImg,Trademark, AllTradeMark,SpuHasImg,SaleAttrResponseData,HasSaleAttrResponseData } from '@/api/product/spu/type';
 let $emit=defineEmits(['changeScene'])
 //点击取消按钮：通知父组件切换场景1，为0
 const cancel=()=>{
-    $emit('changeScene',0)
+    $emit('changeScene',{flag:0,params:'update'})
 }
 
 //存储已有的SPU这些数据
@@ -107,7 +107,7 @@ let SpuParams=ref<SpuData>({
   category3Id: '',//三级分类id
    spuName: "",//spu的名字
   description: "",//spu的描述
-  tmId: 0,//spu的品牌id
+  tmId: '',//spu的品牌id
   spuImageList: [  ],
   spuSaleAttrList: [  ]
 
@@ -148,13 +148,6 @@ const initHasSpuData=async(spu:SpuData)=>{
     //全部的销售属性
     allSaleAttr.value=result3.data
 
-    console.log(AllTradeMark.value);
-    console.log(imgList.value);
-    console.log(123);
-    console.log(saleAttr.value);
-    console.log(saleAttr.value[0].spuSaleAttrValueList[0].saleAttrValueName);
-    console.log(123);
-    console.log(allSaleAttr.value);
 }
 //照片墙点击预览的时候触发的钩子
 const handlePictureCardPreview=(file:any)=>{
@@ -255,11 +248,71 @@ const toLook=(row:SaleAttr)=>{
     //清空输入输入框数据
     row.saleAttrValue=''
 }
+//保存按钮的回调
+const save=async ()=>{
+    //整理数据
+    //1.照片墙的数据
+    //把字段名称更换为接口需要的名称
+    SpuParams.value.spuImageList=imgList.value.map((item:any)=>{
+        return{
+            imgName:item.name,
+            imgUrl:(item.response&&item.response.data)||item.url
+        }
+    })
+    //2.整理销售属性的数据
+    SpuParams.value.spuSaleAttrList=saleAttr.value
+    //发送请求：添加SPU|更新SPU
+    let result=await reqAddOrUpdateSpu(SpuParams.value)
+
+    if (result.code==200) {
+        ElMessage({
+            type:'success',
+            message:SpuParams.value.id?'更新成功':'添加成功'
+        })
+        //通知父组件切换场景
+        $emit('changeScene',{flag:0,params:SpuParams.value.id?'update':'add'})
+    }else{
+        ElMessage({
+            type:'error',
+            message:SpuParams.value.id?'更新失败':'添加失败'
+        })
+    }
+}
 
 
+//添加一个新的spu初始化请求方法
+const initAddSpu=async (c3Id:number|string )=>{
+    //每次清空数组
+    Object.assign(SpuParams.value,{
+  category3Id: '',//三级分类id
+   spuName: "",//spu的名字
+  description: "",//spu的描述
+  tmId: '',//spu的品牌id
+  spuImageList: [  ],
+  spuSaleAttrList: [  ]
+
+})
+//清空照片墙
+imgList.value=[]
+//清空标签
+saleAttr.value=[]
+//清空曾经收集的数据
+saleAttrIdAndValueName.value=''
+    //存储三级分类ID
+    SpuParams.value.category3Id=c3Id
+    //获取所有的品牌的数据
+    let result:AllTradeMark= await reqAllTradeMark()
+    //获取整个项目全部的SPu的销售属性
+    let result1:HasSaleAttrResponseData=await reqAllSaleAttr()
+    //存储数据
+    AllTradeMark.value=result.data
+    allSaleAttr.value=result1.data
+    console.log(123);
+    
+}
 
 //对外暴露initHasSpuData方法，让父组件可以接收到数据
-defineExpose({initHasSpuData})
+defineExpose({initHasSpuData,initAddSpu})
 </script>
 
 <style scoped>
