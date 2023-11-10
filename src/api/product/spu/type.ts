@@ -118,3 +118,8 @@ export interface SkuData{
   skuDefaultImg:string
 
 }
+
+//获取SKU数据接口口的TS类型
+export interface SkuInfoData extends ResponseData{
+  data:SkuData[]
+}

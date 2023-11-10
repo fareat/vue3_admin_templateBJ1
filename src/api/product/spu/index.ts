@@ -1,7 +1,7 @@
 //spu管理模块接口
 import request from '@/utils/request'
 //ts类型
-import { SkuData,HasSpuResponseData,AllTradeMark,SpuHasImg,SaleAttrResponseData,HasSaleAttrResponseData, SpuData } from './type'
+import { SkuInfoData,SkuData,HasSpuResponseData,AllTradeMark,SpuHasImg,SaleAttrResponseData,HasSaleAttrResponseData, SpuData } from './type'
 
 enum API {
   //获取已有的SPU数据
@@ -19,7 +19,11 @@ enum API {
   //更新一个已有的SPU
   UPDATESPU_URL='/admin/product/updateSpuInfo',
   //追加一个新增的SKU地址
-  ADDSKU_URL='/admin/product/saveSkuInfo'
+  ADDSKU_URL='/admin/product/saveSkuInfo',
+  //查看某一个已有的spu下全部的售卖商品
+  SKUINFO_URL='/admin/product/findBySpuId/',
+  //SPU删除按钮接口
+  REMOVESPU_URL='/admin/product/deleteSpu/'
 }
 //获取某一个三级分类下已有的SPU数据
 export const reqHasSpu = (
@@ -50,6 +54,11 @@ export const reqAddOrUpdateSpu=(data:SpuData)=>{
   }
 }
 
-
 //添加一个SKU的请求方法
 export const reqAddSku=(data:SkuData)=>request.post<any,any>(API.ADDSKU_URL,data)
+
+//获取SKU的商品数据
+export const reqSkuList=(spuId:number|string)=>request.get<any,SkuInfoData>(API.SKUINFO_URL+spuId)
+
+//删除接口
+export const reqRemoveSpu=(spuId:number|string)=>request.delete<any,any>(API.REMOVESPU_URL+spuId)
