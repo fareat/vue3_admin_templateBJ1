@@ -16,7 +16,12 @@
           <el-button type="primary" size="small" :icon="row.isSale==1?'Bottom':'Top'" @click="updateSale(row)"></el-button>
           <el-button type="primary" size="small" icon="Edit" @click="updateSku"></el-button>
           <el-button type="primary" size="small" icon="infoFilled" @click="findSku(row)"></el-button>
-          <el-button type="primary" size="small" icon="Delete"></el-button>
+          <el-popconfirm :title="`你确定要删除${row.skuName}吗？`" @confirm="removeSku(row)" width="200px">
+            <template #reference>
+              <el-button type="primary" size="small" icon="Delete" ></el-button>
+            </template>
+          </el-popconfirm>
+          
         </template>
       </el-table-column>
     </el-table>
@@ -84,7 +89,7 @@ import { ElMessage } from 'element-plus'
 import {ref,onMounted} from 'vue'
 import type {SkuResponseData ,SkuData} from '@/api/product/sku/type'
 //引入请求接口
-import { reqSKuList,reqCancelSale,reqSaleSku,reqSkuInfo } from '@/api/product/sku/index';
+import { reqSKuList,reqCancelSale,reqSaleSku,reqSkuInfo,reqRemoveSku } from '@/api/product/sku/index';
 import { SkuInfoData } from '@/api/product/spu/type';
 //分页器当前页码
 let pageNo=ref<number>(1)
@@ -103,6 +108,7 @@ onMounted(()=>{
 })
 
 //当分页器调用这个回调的时候，页码发生变化,可以注入当前的页码
+//获取当前的信息
 const getHasSku=async(pager=1)=>{
   //当前分页器的页码
   pageNo.value=pager
@@ -178,6 +184,23 @@ const findSku=async(row:SkuData)=>{
   skuInfo.value=result.data
   //console.log(skuInfo.value.skuImageList[0].imgUrl);
   
+}
+
+//删除按钮的回调
+const removeSku=async(row)=>{
+  let reuslt= await reqRemoveSku(row.id)
+  if (reuslt.code==200) {
+    ElMessage({
+      type:'success',
+      message:'删除成功'
+    })
+    getHasSku(skuArr.value.length>1?pageNo.value:pageNo.value-1)
+  }else{
+    ElMessage({
+      type:'error',
+      message:'删除失败'
+    })
+  }
 }
 </script>
 
