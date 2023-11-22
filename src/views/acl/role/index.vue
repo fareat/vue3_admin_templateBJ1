@@ -26,7 +26,12 @@
         <template #="{row,$index}">
           <el-button type="primary" size="small" icon="User" @click="setPermisstiom(row)">分配权限</el-button>
           <el-button type="primary" size="small" icon="Edit" @click="updateRole(row)">编辑</el-button>
-          <el-button type="primary" size="small" icon="Delete">删除</el-button>
+          <el-popconfirm :title="`确定要删除${row.roleName}吗？`" width="260px" @confirm="removeRole(row.id)">
+            <template #reference>
+              <el-button type="primary" size="small" icon="Delete">删除</el-button>
+            </template>
+          </el-popconfirm>
+          
         </template>
       </el-table-column>
     </el-table>
@@ -72,18 +77,19 @@
       :props="defaultProps"   展示的字段
       -->
       <el-tree
+      ref="tree"
       :data="menuArr"
       show-checkbox
       node-key="id"
       default-expand-all
-      :default-checked-keys="[5]"
+      :default-checked-keys="selectArr"
       :props="defaultProps"
     />
     </template>
     <template #footer>
       <div style="flex: auto">
         <el-button  @click="drawer=false">取消</el-button>
-        <el-button type="primary" >保存</el-button>
+        <el-button type="primary" @click="handler">保存</el-button>
       </div>
     </template>
   </el-drawer>
@@ -93,7 +99,7 @@
 import { ElMessage } from 'element-plus'
 import {ref,onMounted,reactive,nextTick} from 'vue'
 //接口
-import {reqAllRoleList,reqAddOrUpdateRole,reqAllMenuList} from '@/api/acl/role/index'
+import {reqAllRoleList,reqAddOrUpdateRole,reqAllMenuList,reqSetPermisstion,reqRemoveRole} from '@/api/acl/role/index'
 //接口返回类型
 import type {RoleResponseData,Records,MenuResponseData,MenuList} from '@/api/acl/role/type'
 //引入骨架仓库
@@ -123,6 +129,10 @@ let form=ref<any>()
 let drawer=ref<boolean>(false)
 //定义一个数组存储用户权限的数据
 let menuArr=ref<MenuList>([])
+//准备一个数组：数组用于存储勾选的节点的ID（四级）
+let selectArr=ref<number[]>([])
+//获取tree组件实例
+let tree=ref<any>()
 
 //组建挂载完毕后加载数据
 onMounted(() => {
@@ -219,16 +229,68 @@ const setPermisstiom=async(row:RoleData)=>{
   drawer.value=true
   //收集当前要分类权限的职位的数据
   Object.assign(RoleParams,row)
+  //根据职位获取权限的数据
   let result:MenuResponseData= await reqAllMenuList(RoleParams.id)
   if (result.code==200) {
     menuArr.value=result.data
+    selectArr.value= filterSelectArrr(menuArr.value,[])
   }
   
+}
+//
+const filterSelectArrr=(allData:any,initArr:any)=>{
+  //遍历数组
+  allData.forEach((item:any)=>{
+    //判断是否勾选
+    if (item.select&&item.level==4) {
+       initArr.push(item.id)
+    }
+    if (item.children&&item.children.length>0) {
+      filterSelectArrr(item.children,initArr)
+    }
+  })  
+  return initArr
 }
 
 const defaultProps = {
   children: 'children',
   label: 'name',
+}
+//抽屉确定按钮的回调
+const handler=async()=>{
+  //职位的ID
+  const roleId=RoleParams.id
+  //选中的节点的ID
+  let arr=tree.value.getCheckedKeys()  
+  //半选的ID
+  let arr1=tree.value.getHalfCheckedKeys()
+  //数组连接起来
+  //多个数组连接可以这样：let permissionId = arr1.concat(arr2, arr3);
+  let permissionId=arr.concat(arr1)
+  //接口请求发送相应的ID
+  let result:any= await reqSetPermisstion(roleId,permissionId)
+  if (result.code==200) {
+    //关闭抽屉
+    drawer.value=false
+    //提示信息
+    ElMessage({
+      type:'success',
+      message:'权限分配成功'
+    })
+    //页面刷新
+    window.location.reload();
+  }
+}
+//删除职位
+const removeRole=async(roleId:number)=>{
+  let result:any= await reqRemoveRole(roleId)
+  if (result.code==200) {
+    ElMessage({
+      type:'success',
+      message:'删除成功'
+    })
+    getHasRole(allRole.value.length>1?pageNo.value:pageNo.value-1)
+  }
 }
 
 </script>

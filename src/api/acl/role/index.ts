@@ -11,7 +11,11 @@ enum API{
     //更新已有的职位
     UPDATEROLE_URL='/admin/acl/role/update',
     //菜单权限分配
-    ALLPERMISSTION_URL='/admin/acl/permission/toAssign/'
+    ALLPERMISSTION_URL='/admin/acl/permission/toAssign/',
+    //给相应的职位分配权限
+    SETPERMISTION_URL='/admin/acl/permission/doAssign/?',
+    //删除已有的职位
+    REMOVEROLE_URL='/admin/acl/role/remove/'
 
 
 }
@@ -27,3 +31,8 @@ export const reqAddOrUpdateRole=(data:RoleData)=>{
 }
 //菜单的权限分配
 export const reqAllMenuList=(roleId:number)=>request.get<any,MenuResponseData>(API.ALLPERMISSTION_URL+roleId)
+//给相应的职位分配权限
+export const reqSetPermisstion=(roleId:number,permissionId:number[])=>request.post(API.SETPERMISTION_URL+`roleId=${roleId}&permissionId=${permissionId}`)
+//删除职位
+export const reqRemoveRole=(roleId:number)=>request.delete<any,any>(API.REMOVEROLE_URL+roleId)
+
