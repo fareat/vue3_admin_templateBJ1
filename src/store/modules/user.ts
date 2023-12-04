@@ -15,8 +15,24 @@ import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 //引入路由常量
-import { constantRoute } from '@/router/routes'
-import request from '@/utils/request'
+import { constantRoute, asyncRoute, anyRoute } from '@/router/routes'
+import router from '@/router/index'
+//引入深拷贝方法
+//@ts-ignore
+import cloneDeep from 'lodash/cloneDeep'
+
+//用于过滤当前用户需要的异步路由
+function filterAsyncRoute(asnycRoute: any, routes: any) {
+  return asnycRoute.filter((item: any) => {
+    //includes是判断routes是否存在item.name，有则往下运行
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoute(item.children, routes)
+      }
+      return true
+    }
+  })
+}
 //创建用户小仓库
 let useUserStore = defineStore('User', {
   //小仓库存储数据的地方
@@ -27,6 +43,7 @@ let useUserStore = defineStore('User', {
       menuRoutes: constantRoute, //仓库存储生成菜单需要的路由
       username: '',
       avatar: '',
+      button: [],
     }
   },
   //异步或者逻辑的地方
@@ -58,7 +75,21 @@ let useUserStore = defineStore('User', {
       if (result.code == 200) {
         this.username = result.data.name
         this.avatar = result.data.avatar
-        console.log(this.username, this.avatar)
+        this.buttons = result.data.buttons
+        //异步路由处理方法cloneDeep(asyncRoute)
+        let userAsyncRounte = filterAsyncRoute(
+          cloneDeep(asyncRoute),
+          result.data.routes,
+        )
+        //菜单的数据
+        ;(this.menuRoutes = [...constantRoute, ...userAsyncRounte, anyRoute]),
+          [...userAsyncRounte, anyRoute].forEach((route: any) => {
+            router.addRoute(route)
+          })
+
+        console.log(this.username, this.avatar, this.menuRoutes)
+        //目前路由管理的只有常量路由：用户计算异步路由，任意路由动态追加
+
         return 'ok'
       } else {
         return Promise.reject(new Error(result.message))

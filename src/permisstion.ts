@@ -42,8 +42,11 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         try {
           //无，获取用户信息
           await userStore.userInfo()
+          //有一种情况：刷新的时候是异步路由，有可能获取到了用户信息，但是异步路由还没加载完成，出现空白效果
+
           //放行
-          next()
+          //{...to}确保了要渲染完成后才能放行，解决了以上描述的BUG出现的情况
+          next({ ...to })
         } catch (error) {
           //token过期，或者token被本地修改，才会触发这个错误
           //处理：1.退出登录，先把本地的相关数据清空

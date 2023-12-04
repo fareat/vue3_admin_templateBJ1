@@ -6,6 +6,8 @@ export interface UserState {
   menuRoutes: RouteRecordRaw[]
   username: string
   avatar: string
+  //存储用户是否保留某一个按钮
+  button: string[]
 }
 
 export interface CategoryState {

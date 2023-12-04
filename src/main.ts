@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 //引入element-plus插件的样式
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+//暗黑模式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 //配置element-plus的国际化
 //忽略以下导入的文件
 //@ts-ignore
@@ -22,6 +24,7 @@ import axios from 'axios'
 //引入自定义插件对象：注册整个项目的全局组件
 import gloalComponent from '@/components/index'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 const app = createApp(App)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -49,4 +52,8 @@ axios({
 })
 app.use(pinia)
 app.use(router)
+//引入自定义指令事件
+import { isHasButton } from './directive/has'
+isHasButton(app)
+
 app.mount('#app')

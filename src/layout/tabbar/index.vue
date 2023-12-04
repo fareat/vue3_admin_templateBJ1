@@ -33,12 +33,12 @@ export default {
   height: 100%;
   display: flex;
   justify-content: space-between;
-  background-image: linear-gradient(
+  /*background-image: linear-gradient(
     to right,
     rgb(240, 234, 234),
     rgb(239, 226, 226),
     rgb(221, 212, 212)
-  );
+  );*/
   .tabbar_left {
     display: flex;
     align-items: center;

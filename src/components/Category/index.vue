@@ -9,7 +9,7 @@
           @change="handler"
         >
           <el-option
-            v-for="(c1, index) in categoryStore.c1Arr"
+            v-for="(c1) in categoryStore.c1Arr"
             :key="c1.id"
             :label="c1.name"
             :value="c1.id"
@@ -23,10 +23,10 @@
           @change="handler1"
         >
           <el-option
-            v-for="(c1, index) in categoryStore.c2Arr"
-            :key="c1.id"
+            v-for="(c1) in categoryStore.c2Arr"
+            :key="(c1.id as number)"
             :label="c1.name"
-            :value="c1.id"
+            :value="(c1.id as number)"
           ></el-option>
         </el-select>
       </el-form-item>

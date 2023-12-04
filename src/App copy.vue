@@ -35,7 +35,7 @@ import { onMounted } from 'vue'
 import { reqLogin } from './api/user'
 
 onMounted(() => {
-  reqLogin({ username: 'admin', password: '111111' })
+  reqLogin({ username: 'admin', password: '1111111' })
 })
 
 //当组件挂载完毕测试发一个请求
