@@ -64,7 +64,7 @@ export default [
       if (!checkUser) {
         return { code: 201, data: { message: '获取用户信息失败' } }
       }
-      //如果有返回成功信息1
+      //如果有返回成功信息12
       return { code: 200, data: { checkUser } }
     },
   },
