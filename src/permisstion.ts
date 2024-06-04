@@ -12,7 +12,7 @@ nprogress.configure({ showSpinner: false })
 import useUserStore from './store/modules/user'
 //大仓库
 import pinia from './store/index'
-let userStore = useUserStore(pinia)
+const userStore = useUserStore(pinia)
 console.log(userStore)
 
 //全局守卫：项目当中任意路由切换都会触发的钩子
@@ -25,9 +25,9 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   //进度条组件
   nprogress.start()
   //判断用户登录还是未登录
-  let token = userStore.token
+  const token = userStore.token
   //获取用户的名字
-  let username = userStore.username
+  const username = userStore.username
   if (token) {
     //用户登录之后
     if (to.path == '/login') {
@@ -67,7 +67,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   }
 })
 //全局的后置守卫
-router.afterEach((to: any, from: any) => {
+router.afterEach(() => {
   nprogress.done()
 })
 

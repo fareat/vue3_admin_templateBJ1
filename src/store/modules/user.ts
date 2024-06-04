@@ -18,7 +18,7 @@ import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 import { constantRoute, asyncRoute, anyRoute } from '@/router/routes'
 import router from '@/router/index'
 //引入深拷贝方法
-//@ts-ignore
+
 import cloneDeep from 'lodash/cloneDeep'
 
 //用于过滤当前用户需要的异步路由
@@ -34,7 +34,7 @@ function filterAsyncRoute(asnycRoute: any, routes: any) {
   })
 }
 //创建用户小仓库
-let useUserStore = defineStore('User', {
+const useUserStore = defineStore('User', {
   //小仓库存储数据的地方
   state: (): UserState => {
     return {
@@ -51,7 +51,7 @@ let useUserStore = defineStore('User', {
     //用户登录的方法
     async userLogin(data: loginFormData) {
       //登录请求
-      let result: loginResponseData = await reqLogin(data)
+      const result: loginResponseData = await reqLogin(data)
       console.log(result)
 
       //登录成功：200-》token
@@ -70,14 +70,14 @@ let useUserStore = defineStore('User', {
     //获取用户信息的方法
     async userInfo() {
       //获取用户信息进行存储仓库
-      let result: userInfoReponseData = await reqUserInfo()
+      const result: userInfoReponseData = await reqUserInfo()
       //获取用户信息成功，存储一下用户信息
       if (result.code == 200) {
         this.username = result.data.name
         this.avatar = result.data.avatar
         this.buttons = result.data.buttons
         //异步路由处理方法cloneDeep(asyncRoute)
-        let userAsyncRounte = filterAsyncRoute(
+        const userAsyncRounte = filterAsyncRoute(
           cloneDeep(asyncRoute),
           result.data.routes,
         )
@@ -97,7 +97,7 @@ let useUserStore = defineStore('User', {
     },
     //退出登录
     async userLogout() {
-      let result: any = await reqLogout()
+      const result: any = await reqLogout()
       console.log(result)
       if (result.code == 200) {
         this.token = ''

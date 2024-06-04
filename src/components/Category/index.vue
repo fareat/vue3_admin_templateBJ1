@@ -9,7 +9,7 @@
           @change="handler"
         >
           <el-option
-            v-for="(c1) in categoryStore.c1Arr"
+            v-for="c1 in categoryStore.c1Arr"
             :key="c1.id"
             :label="c1.name"
             :value="c1.id"
@@ -23,10 +23,10 @@
           @change="handler1"
         >
           <el-option
-            v-for="(c1) in categoryStore.c2Arr"
-            :key="(c1.id as number)"
-            :label="c1.name"
-            :value="(c1.id as number)"
+            v-for="c2 in categoryStore.c2Arr"
+            :key="c2.id "
+            :label="c2.name"
+            :value="c2.id "
           ></el-option>
         </el-select>
       </el-form-item>
@@ -36,10 +36,10 @@
           v-model="categoryStore.c3Id"
         >
           <el-option
-            v-for="(c1, index) in categoryStore.c3Arr"
-            :key="c1.id"
-            :label="c1.name"
-            :value="c1.id"
+            v-for="(c3) in categoryStore.c3Arr"
+            :key="c3.id"
+            :label="c3.name"
+            :value="c3.id"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -70,7 +70,7 @@ const handler = () => {
 }
 const handler1 = () => {
   categoryStore.getC3()
-  categoryStore.c3Id = ''
+  categoryStore.c3Id = ""
 }
 //接收父级传输过来的scene
 defineProps(['scene'])

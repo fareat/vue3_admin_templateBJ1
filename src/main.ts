@@ -6,7 +6,7 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 //配置element-plus的国际化
 //忽略以下导入的文件
-//@ts-ignore
+
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'virtual:svg-icons-register'
 import App from '@/App.vue'
@@ -42,6 +42,7 @@ app.use(ElementPlus)
 app.use(gloalComponent)
 
 //登录接口
+
 axios({
   url: '/api/user/login',
   method: 'post',

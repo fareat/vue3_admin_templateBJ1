@@ -1,6 +1,6 @@
 import pinia from '@/store/index'
 import useUserStore from '@/store/modules/user'
-let userStore = useUserStore(pinia)
+const userStore = useUserStore(pinia)
 
 export const isHasButton = (app: any) => {
   //获取对应的仓库
